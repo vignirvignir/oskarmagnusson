@@ -1,6 +1,6 @@
 import { access, cp, mkdir, writeFile } from 'node:fs/promises';
 import { catalog } from './src/catalog.mjs';
-import { coverFile, detailPage, entryPath, homePage } from './src/templates.mjs';
+import { bioPage, coverFile, detailPage, entryPath, homePage } from './src/templates.mjs';
 
 const source = new URL('./src/assets/', import.meta.url);
 const output = new URL('./dist/', import.meta.url);
@@ -36,7 +36,8 @@ async function writePage(path, html) {
 await Promise.all([
   cp(source, new URL('assets/', output), { recursive: true }),
   writePage('./', homePage(catalog)),
+  writePage('about/', bioPage()),
   ...catalog.map((entry) => writePage(entryPath(entry), detailPage(entry, catalog)))
 ]);
 
-console.log(`Built the homepage and ${catalog.length} detail pages in dist/.`);
+console.log(`Built the homepage, full bio, and ${catalog.length} detail pages in dist/.`);

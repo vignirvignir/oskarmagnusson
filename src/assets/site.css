@@ -184,6 +184,32 @@ img { display: block; max-width: 100%; }
 }
 .text-link:hover { text-decoration-thickness: 2px; }
 .about .text-link { display: inline-block; margin-top: 1rem; }
+.biography {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 2rem clamp(2rem, 6vw, 6rem);
+  padding-block: clamp(2.75rem, 6vw, 5.5rem);
+}
+.biography-heading { grid-column: 1 / -1; }
+.biography-heading .eyebrow { margin-bottom: .85rem; color: var(--accent); }
+.biography h1 {
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  line-height: .96;
+  letter-spacing: -.07em;
+}
+.biography-portrait { grid-column: 2; grid-row: 2; }
+.biography-portrait img { width: 100%; height: auto; }
+.biography-copy {
+  grid-column: 1;
+  grid-row: 2;
+  font: clamp(1.15rem, 1.8vw, 1.3rem)/1.65 var(--serif);
+}
+.biography-copy .text-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font: .95rem/1.5 var(--sans);
+}
 
 .site-footer { background: var(--ink); color: var(--paper); }
 .site-footer :focus-visible { outline-color: var(--paper); }
@@ -292,6 +318,8 @@ img { display: block; max-width: 100%; }
   .wrap { width: calc(100% - 2.5rem); }
   .header-inner { align-items: start; flex-direction: column; gap: .55rem; padding-block: 1rem .65rem; }
   .hero, .detail-grid, .about { grid-template-columns: minmax(0, 1fr); }
+  .biography { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .biography-portrait, .biography-copy { grid-column: auto; grid-row: auto; }
   .hero { gap: 1.8rem; }
   .hero h1 { font-size: clamp(3.45rem, 13.5vw, 6rem); }
   .hero-portrait img { aspect-ratio: 1.32; }

@@ -26,9 +26,18 @@ function cover(entry, root, loading) {
   return `<img src="${root}assets/covers/${escapeHtml(coverFile(entry))}" width="${width}" height="${height}" alt="${escapeHtml(entry.title)} cover" loading="${loading}" decoding="async">`;
 }
 
+function portrait(root) {
+  return `<img src="${root}assets/${escapeHtml(author.portrait)}" alt="${escapeHtml(author.name)} in a plaid shirt" width="995" height="820" fetchpriority="high">`;
+}
+
 function page({ pageTitle, description, root, body, active }) {
   const home = root === './' ? '' : root;
-  const menu = [['books', 'Books'], ['anthologies', 'Anthologies'], ['about', 'About'], ['contact', 'Contact']];
+  const menu = [
+    ['books', 'Books', `${home}#books`],
+    ['anthologies', 'Anthologies', `${home}#anthologies`],
+    ['about', 'About', `${root}about/`],
+    ['contact', 'Contact', `${home}#contact`]
+  ];
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -46,7 +55,7 @@ function page({ pageTitle, description, root, body, active }) {
     <div class="wrap header-inner">
       <a class="wordmark" href="${root}" lang="is">${escapeHtml(author.name)}</a>
       <nav class="site-nav" aria-label="Main navigation">
-        ${menu.map(([id, label]) => `<a href="${home}#${id}"${active === id ? ' class="current"' : ''}>${label}</a>`).join('\n        ')}
+        ${menu.map(([id, label, href]) => `<a href="${href}"${active === id ? ' class="current"' : ''}${active === 'about' && id === 'about' ? ' aria-current="page"' : ''}>${label}</a>`).join('\n        ')}
       </nav>
     </div>
   </header>
@@ -94,7 +103,7 @@ export function homePage(catalog) {
         <a class="button" href="#books">Explore the books</a>
       </div>
       <figure class="hero-portrait">
-        <img src="./assets/${escapeHtml(author.portrait)}" alt="Óskar Magnússon in a plaid shirt" width="995" height="820" fetchpriority="high">
+        ${portrait('./')}
       </figure>
     </section>
     <section class="wrap catalog-section" id="books" aria-labelledby="books-heading">
@@ -116,10 +125,33 @@ export function homePage(catalog) {
     <section class="wrap about" id="about" aria-labelledby="about-heading">
       <h2 id="about-heading">About Óskar</h2>
       <div class="prose">
-        ${author.biography.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('\n        ')}
-        <a class="text-link" href="${escapeHtml(author.publisherProfile)}">Author profile at Forlagið</a>
+        ${author.shortBiography.map(passageParagraph).join('\n        ')}
+        <a class="text-link" href="./about/">Read the full bio</a>
       </div>
     </section>`
+  });
+}
+
+export function bioPage() {
+  const root = '../';
+  return page({
+    pageTitle: `Full bio — ${author.name}`,
+    description: 'The biography of Icelandic author Óskar Magnússon, from the fishing trawlers of his youth to his work in journalism, law and fiction.',
+    root,
+    active: 'about',
+    body: `    <article class="wrap biography">
+      <header class="biography-heading">
+        <p class="eyebrow">Full bio</p>
+        <h1 lang="is">${escapeHtml(author.name)}</h1>
+      </header>
+      <figure class="biography-portrait">
+        ${portrait(root)}
+      </figure>
+      <div class="prose biography-copy">
+        ${author.biography.map(passageParagraph).join('\n        ')}
+        <a class="text-link" href="${escapeHtml(author.publisherProfile)}">Author profile at Forlagið</a>
+      </div>
+    </article>`
   });
 }
 
