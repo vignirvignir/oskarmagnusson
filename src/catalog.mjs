@@ -1,3 +1,8 @@
+import { drAmplatz } from './stories/dr-amplatz.mjs';
+import { reckoningContent } from './stories/latid-siga-piltar.mjs';
+import { theCook } from './stories/the-cook.mjs';
+import { morgunbladidReview, verjandinnContent } from './stories/verjandinn.mjs';
+
 // Each entry supplies both its catalog card and its detail page.
 export const catalog = [
   {
@@ -19,9 +24,7 @@ export const catalog = [
     related: [{ label: 'Verjandinn (The Defense Attorney)', slug: 'verjandinn' }],
     review: {
       heading: 'Praise for The Defense Attorney',
-      text: 'The Defense Attorney is an exciting novel that is difficult to set aside before it’s finished. The characters are believable and some are incredibly similar to nationally recognized figures. It is a funny, entertaining, and thrilling story.',
-      reviewer: 'Vilhjálmur A. Kjartansson',
-      publication: 'Morgunblaðið'
+      quotes: [morgunbladidReview]
     }
   },
   {
@@ -35,10 +38,7 @@ export const catalog = [
     coverSize: [530, 771],
     palette: 'ochre',
     summary: 'A contested custody case takes a dangerous turn when a mother and daughter flee to Iceland.',
-    description: [
-      'In defiance of a court ruling, a mother leaves the United States for Iceland with her young daughter. A team hired to retrieve the child gains the mother’s confidence and uses a staged film shoot as cover for an attempt to take the girl at night.',
-      'The case introduces defense attorney Stefán Bjarnarson in a courtroom drama about loyalty, betrayal and the lengths people will go to get what they want.'
-    ],
+    ...verjandinnContent,
     links: [{ label: 'Book at Forlagið', url: 'https://www.forlagid.is/vara/verjandinn/' }]
   },
   {
@@ -52,10 +52,7 @@ export const catalog = [
     coverSize: [607, 920],
     palette: 'slate',
     summary: 'In a secluded Icelandic valley, a farming community faces natural disaster, financial pressure and crime.',
-    description: [
-      'In Hlíðardalur, life follows the rhythms of farm work, and neighbors take pride in their care for the land and their willingness to help one another.',
-      'When natural disasters, bankers and crime threaten the valley, the farmers have to decide how far they will go to protect their community. Óskar’s first novel finds room for affection and satire amid the upheaval.'
-    ]
+    ...reckoningContent
   },
   {
     slug: 'eg-se-ekkert-svona-gleraugnalaus',
@@ -77,7 +74,36 @@ export const catalog = [
       'Fire Chief', 'Ingveldur Melinda', 'Blokkin', 'Málmsteypa Sigmundar',
       'Dr. Amplatz', 'Aferíka', 'Hótel', 'Fína kvöldið'
     ],
-    related: [{ label: '“Dr. Amplatz” in Best European Fiction 2014', slug: 'best-european-fiction-2014' }]
+    related: [{ label: '“Dr. Amplatz” in Best European Fiction 2014', slug: 'best-european-fiction-2014' }],
+    review: {
+      heading: 'Reviews',
+      quotes: [
+        {
+          text: '… lipur smásagnahöfundur …',
+          reviewer: 'Egill Helgason',
+          publication: 'Kiljan',
+          language: 'is'
+        },
+        {
+          text: 'Persónur Óskars eiga það margar sammerkt að sjá eitthvað sem aðrir sjá ekki og sögurnar eiga væntanlega öðrum þræði að bregða upp fyrir okkur gleraugum. Fá okkur til að rýna í litlu atriðin sem við lítum svo gjarna fram hjá í daglegu lífi.',
+          reviewer: 'Auður Aðalsteinsdóttir',
+          publication: 'Víðsjá, RÚV',
+          language: 'is'
+        },
+        {
+          text: 'Óskar hefur mjög næmt auga fyrir kynlegum kvistum … og spaugilegum aðstæðum. … smásögur sem er gaman að lesa … textinn alltaf lipur og lifandi. … ákaflega pennafær maður og ég skil vel að smásögur hans falli vel í kramið. … Betri en Davíð!',
+          reviewer: 'Hrafn Jökulsson',
+          publication: 'Kiljan',
+          language: 'is'
+        },
+        {
+          text: 'Stíll Óskars er skrumlaus og sagnaheimur hans er jafnan hlaðinn nokkuð svartri kímni … Megineinkenni er hversu frásagnargleðin er ríkuleg og hversu fundvís höfundur er á skemmtileg söguefni. Stíllinn er knappur og kaldhæðinn og sögurnar hnyttnar. Það má hafa verulega ánægju af lestri þessarar bókar.',
+          reviewer: 'Skafti Þ. Halldórsson',
+          publication: 'Morgunblaðið',
+          language: 'is'
+        }
+      ]
+    }
   },
   {
     slug: 'bordadi-eg-kvoldmat-i-gaer',
@@ -90,17 +116,24 @@ export const catalog = [
     coverSize: [586, 920],
     palette: 'moss',
     summary: 'Óskar’s first collection finds humor and surprise in familiar situations, from a ship’s galley to a heap of paperwork.',
+    descriptionHeading: 'Passage',
     description: [
-      'The titles hint at the range of Óskar’s debut collection. “The Cook” and stories whose titles translate as “Gold Glitters” and “I Only Need One Shot” bring an eye for the unexpected to familiar people and situations.',
-      'Some of the stories lean into comedy, while others take a more serious turn. Often both moods surface in the same encounter.'
+      'The names of the short stories catch the reader’s attention immediately: *Gold glitters*, *Oh ho ho, paper everywhere*, *The Cook* and *I only need one shot* reflect the diverse subjects of Óskar’s stories in this collection.',
+      'The stories depict people we can all relate to, in situations that bring out the author’s eye for the funny and the extraordinary.',
+      'Some stories are hilarious, while others take a more serious turn. Óskar brings humor and honesty together in both.'
+    ],
+    icelandicPassage: [
+      'Nöfnin koma lesandanum strax á bragðið: *Það glampar á gullforðann*, *Oh ho ho, allt fullt af pappír*, *Kokkur upp á einn og kvart* og *Mér dugar eitt skot* gefa til kynna margvísleg viðfangsefni smásagna Óskars Magnússonar.',
+      'Þær sýna svipmyndir af fólki sem allir kannast við, í aðstæðum þar sem næmt auga höfundar fyrir hinu skemmtilega og óvenjulega í fari fólks nýtur sín vel.',
+      'Efnistök Óskars eru fjölbreytt, sumar sögurnar eru bráðfyndnar en í öðrum kveður við alvarlegri tón. Þá sameinar hann stundum skop og alvöru á eftirminnilegan hátt.'
     ],
     contents: [
-      'Viltu að ég tali hærra?', 'Það glampar á gullforðann', 'Kokkur upp á einn og kvart',
+      'Viltu að ég tali hærra?', 'Það glampar á gullforðann',
+      { title: 'Kokkur upp á einn og kvart', label: 'The Cook', slug: 'out-of-the-blue' },
       'Gangið á guðs vegum', 'Oh ho ho, allt fullt af pappír', 'Þú átt rétt á að þegja',
       'Everybody have a horse?', 'Forseta er skemmt', 'Mér dugar eitt skot',
       'Hámenntaður íslenskur sveitamaður'
-    ],
-    related: [{ label: '“The Cook” in Out of the Blue', slug: 'out-of-the-blue' }]
+    ]
   },
   {
     slug: 'out-of-the-blue',
@@ -112,6 +145,7 @@ export const catalog = [
     coverSize: [397, 600],
     palette: 'slate',
     story: 'The Cook',
+    reading: theCook,
     summary: '“The Cook” appears alongside work by nineteen other Icelandic writers in this English-language anthology.',
     description: [
       'Edited by Helen Mitsios with a foreword by Sjón, Out of the Blue brings together twenty Icelandic writers. It was the first anthology devoted to Icelandic short fiction in English translation.',
@@ -130,6 +164,7 @@ export const catalog = [
     coverSize: [584, 920],
     palette: 'rose',
     story: 'Dr. Amplatz',
+    reading: drAmplatz,
     summary: '“Dr. Amplatz,” translated by Christopher Burawa, represents Iceland in this collection of European fiction.',
     description: [
       'This edition of the Dalkey Archive Press series brings together fiction from more than twenty-five languages, with a preface by Drago Jančar.',

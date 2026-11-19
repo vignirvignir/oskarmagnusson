@@ -9,6 +9,10 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
+function passageParagraph(text) {
+  return `<p>${escapeHtml(text).replace(/\*([^*]+)\*/g, '<em>$1</em>')}</p>`;
+}
+
 const title = (entry) => entry.titleLanguage
   ? `<span lang="${escapeHtml(entry.titleLanguage)}">${escapeHtml(entry.title)}</span>`
   : escapeHtml(entry.title);
@@ -130,6 +134,12 @@ export function detailPage(entry, catalog) {
   });
   const links = [...(entry.links ?? []), ...relatedLinks];
   const review = entry.review;
+  const reading = entry.reading;
+  const contents = (entry.contents ?? []).map((item) => {
+    if (typeof item === 'string') return `<li>${escapeHtml(item)}</li>`;
+    const story = catalog.find(({ slug }) => slug === item.slug);
+    return `<li>${escapeHtml(item.title)} (<a class="text-link" href="${root}${entryPath(story)}#reading">${escapeHtml(item.label)}</a>)</li>`;
+  });
 
   return page({
     pageTitle: `${entry.title} — ${author.name}`,
@@ -145,22 +155,42 @@ export function detailPage(entry, catalog) {
           ${entry.subtitle ? `<p class="detail-subtitle">${escapeHtml(entry.subtitle)}</p>` : ''}
           <p class="publisher">${escapeHtml(entry.publisher)}</p>
           <div class="prose synopsis">
-            <h2>${anthology ? 'About the anthology' : 'About the book'}</h2>
-            ${entry.description.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('\n            ')}
+            <h2>${escapeHtml(entry.descriptionHeading ?? (anthology ? 'About the anthology' : 'About the book'))}</h2>
+            ${entry.description.map(passageParagraph).join('\n            ')}
+            ${entry.icelandicPassage ? `<h3 class="original-heading">Icelandic</h3>
+            <div lang="is">${entry.icelandicPassage.map(passageParagraph).join('\n            ')}</div>` : ''}
+            ${reading ? `<a class="button" href="#reading">${escapeHtml(reading.linkLabel ?? `Read ${reading.title}`)}</a>` : ''}
             ${links.length ? `<ul class="detail-links">${links.map(({ label, url }) => `<li><a class="text-link" href="${escapeHtml(url)}">${escapeHtml(label)}</a></li>`).join('')}</ul>` : ''}
           </div>
         </div>
         <div class="cover-stage detail-cover ${escapeHtml(entry.palette)}">${cover(entry, root, 'eager')}</div>
-        ${entry.contents ? `<section class="contents" aria-labelledby="contents-heading">
+        ${contents.length ? `<section class="contents" aria-labelledby="contents-heading">
           <h2 id="contents-heading">Contents</h2>
-          <ol>${entry.contents.map((name) => `<li>${escapeHtml(name)}</li>`).join('')}</ol>
+          <ol>${contents.join('')}</ol>
+        </section>` : ''}
+        ${entry.plot ? `<section class="plot-section" aria-labelledby="plot-heading">
+          <h2 id="plot-heading">Plot outline</h2>
+          <details class="plot-details">
+            <summary>Spoiler alert · Show plot outline</summary>
+            <div class="prose">
+              ${entry.plot.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('\n              ')}
+            </div>
+          </details>
+        </section>` : ''}
+        ${reading ? `<section class="reading-section" id="reading" aria-labelledby="reading-heading">
+          <div class="reading-text">
+            <h2 id="reading-heading">${escapeHtml(reading.title)}</h2>
+            ${reading.context ? `<p class="reading-context">${escapeHtml(reading.context)}</p>` : ''}
+            ${reading.translator ? `<p class="reading-credit">By <span lang="is">${escapeHtml(author.name)}</span> · Translated by ${escapeHtml(reading.translator)}</p>` : ''}
+            ${reading.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('\n            ')}
+          </div>
         </section>` : ''}
         ${review ? `<section class="review" aria-labelledby="review-heading">
           <h2 id="review-heading">${escapeHtml(review.heading)}</h2>
-          <figure>
-            <blockquote><p>“${escapeHtml(review.text)}”</p></blockquote>
-            <figcaption>${escapeHtml(review.reviewer)}, <cite lang="is">${escapeHtml(review.publication)}</cite></figcaption>
-          </figure>
+          ${review.quotes.map((quote) => `<figure>
+            <blockquote lang="${escapeHtml(quote.language)}"><p><q>${escapeHtml(quote.text)}</q></p></blockquote>
+            <figcaption>${escapeHtml(quote.reviewer)}${quote.publication ? `, <cite lang="is">${escapeHtml(quote.publication)}</cite>` : ''}</figcaption>
+          </figure>`).join('\n          ')}
         </section>` : ''}
       </article>
     </div>`

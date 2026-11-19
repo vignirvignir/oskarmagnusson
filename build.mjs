@@ -20,6 +20,11 @@ for (const entry of catalog) {
       throw new Error(`Unknown related title "${slug}" in "${entry.slug}".`);
     }
   }
+  for (const item of entry.contents ?? []) {
+    if (typeof item !== 'string' && !catalog.some(({ slug, reading }) => slug === item.slug && reading)) {
+      throw new Error(`Unknown reading section "${item.slug}" in "${entry.slug}".`);
+    }
+  }
 }
 
 async function writePage(path, html) {

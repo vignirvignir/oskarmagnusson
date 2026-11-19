@@ -226,7 +226,13 @@ img { display: block; max-width: 100%; }
 }
 .detail-links { margin: 1.2rem 0 0; padding: 0; list-style: none; }
 .detail-links li + li { margin-top: .45rem; }
-.contents, .review {
+.original-heading {
+  margin: 1.5rem 0 .5rem;
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-style: italic;
+}
+.contents, .review, .reading-section, .plot-section {
   grid-column: 1 / -1;
   padding-block: 1.8rem;
   border-top: 1px solid var(--line);
@@ -246,7 +252,33 @@ img { display: block; max-width: 100%; }
   border-inline-start: 2px solid var(--accent);
 }
 .review blockquote { margin: 0; font: 1.25rem/1.5 var(--serif); }
+.review q:lang(is) { quotes: "„" "“" "‚" "‘"; }
 .review figcaption { margin-top: .75rem; color: var(--muted); }
+.review figure + figure { margin-top: 1.8rem; }
+.plot-details {
+  max-width: 46rem;
+  border: 1px solid var(--line);
+  background: #f0ede4;
+}
+.plot-details summary {
+  padding: .8rem 1rem;
+  color: var(--accent);
+  font-weight: 650;
+  cursor: pointer;
+}
+.plot-details .prose { padding: .3rem 1rem 1.2rem; }
+.reading-text {
+  max-width: 39rem;
+  margin-inline: auto;
+  font: 1.2rem/1.75 var(--serif);
+}
+.reading-text p + p { margin-top: 1.05em; }
+.reading-credit {
+  margin-bottom: 1.9rem;
+  color: var(--muted);
+  font: .9rem/1.5 var(--sans);
+}
+.reading-context { color: var(--muted); font-style: italic; }
 
 @media (max-width: 65rem) {
   .wrap { width: min(100% - 4rem, 75rem); }
